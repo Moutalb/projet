@@ -1,0 +1,14 @@
+include "/etc/bind/cle-ddns.key";
+
+zone "rouge.labo" {
+file "rouge.labo";
+type primary;
+allow-update { key "cle-ddns"; };
+
+
+# update-policy {
+#      grant cle-ns wildcard *.rouge.labo ANY;
+#		}; 
+
+}; 
+
