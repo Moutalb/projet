@@ -1,0 +1,64 @@
+
+resource "proxmox_lxc" "kea_dhcp" {
+  vmid        = 201
+  hostname    = "kea-dhcp"
+  target_node = "proxmox1"
+  clone       = 101
+  password    = "mlkjhg"
+  cores       = 1
+  memory      = 512
+  swap        = 512
+  rootfs {
+  storage = "stockage"
+  size = "2G"
+  }
+  network {
+  name = "eth0"
+  bridge = "vmbr0"
+  ip = "10.0.100.245/24"
+  }
+}
+
+resource "proxmox_lxc" "bind_dns" {
+  vmid        = 202
+  hostname    = "bind-dns"
+  target_node = "proxmox1"
+  clone       = 101
+  password    = "mlkjhg"
+  cores       = 1
+  memory      = 512
+  swap        = 512
+  rootfs {
+  storage = "stockage"
+  size = "2G"
+  }
+  network {
+  name = "eth0"
+  bridge = "vmbr0"
+  ip = "10.0.100.246/24"
+  }
+
+}
+
+resource "proxmox_lxc" "chrony_ntp" {
+  vmid        = 203
+  hostname    = "chrony-ntp"
+  target_node = "proxmox1"
+  clone       = 101
+  password    = "mlkjhg"
+  cores       = 1
+  memory      = 512
+  swap        = 512
+
+  rootfs {
+  storage = "stockage"
+  size = "2G"
+  }
+
+  network {
+  name = "eth0"
+  bridge = "vmbr0"
+  ip = "10.0.100.247/24"
+  }
+
+}

@@ -1,0 +1,65 @@
+server default {
+
+    listen {
+        ipaddr = *
+        port = 1812
+        type = auth
+    }
+
+    authorize {
+        filter_username
+        update control {
+            Auth-Type := LDAP
+        }
+
+        ldap
+        if (LDAP-Group == "Informatique") {
+           update reply {
+              Tunnel-Type := VLAN
+              Tunnel-Medium-Type := IEEE-802
+              Tunnel-Private-Group-Id := "100"
+              }
+            }
+
+        preprocess
+        chap
+        mschap
+#        digest
+#        suffix
+#        eap
+#        files
+    }
+
+    authenticate {
+        Auth-Type PAP {
+            pap
+        }
+
+        Auth-Type CHAP {
+            chap
+        }
+
+        Auth-Type MS-CHAP {
+            mschap
+        }
+
+        Auth-Type MS-CHAPv2 {
+            mschap
+        }
+
+        Auth-Type EAP {
+            eap
+        }
+
+        Auth-Type LDAP {
+            ldap
+        }
+    }
+
+    post-auth {
+        exec
+        attr_filter.post-proxy
+        attr_filter.access_reject
+#        attr_filter.access_accept
+    }
+}

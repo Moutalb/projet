@@ -1,0 +1,33 @@
+suffix "dc=net,dc=tp"
+rootdn "cn=admin,dc=net,dc=tp"
+rootpw {SSHA}nQz8atC45wOu+bGnH1yhThk1/UHnj2o8
+database bdb
+suffix "dc=net,dc=tp"
+rootdn "cn=admin,dc=net,dc=tp"
+directory "/var/lib/ldap"
+
+# Paramètres SASL pour Kerberos
+sasl-realm NET.TP
+sasl-host KRB-TP.net.tp
+sasl-secprops none
+
+# Authentification avec Kerberos
+authz-policy to
+authz-regexp
+"uid=([^,]+),cn=NET.TP,cn=gssapi,cn=auth"
+"ldap:///dc=net,dc=tp??sub?(uid=\1)"
+index objectClass eq
+index uid eq
+index cn,sn,mail pres,eq,sub
+index entryUUID,entryCSN eq
+
+# Définition des ACL
+#access to attrs=userPassword
+#by dn="cn=admin,dc=net,dc=tp" write
+#by anonymous auth
+#by self write
+#by * none
+#access to *
+#by dn="cn=admin,dc=net,dc=tp" write
+#by self read
+#by * read

@@ -1,0 +1,34 @@
+
+version: '3.8'
+
+services:
+  site1:
+    image: 192.168.100.254:5000/web:v1
+    command: apache2ctl -D FOREGROUND
+    volumes:
+      - /data/site1:/var/www/html/
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role == worker]
+
+  site2:
+    image: 192.168.100.254:5000/web:v1
+    command: apache2ctl -D FOREGROUND
+    volumes:
+      - /data/site2:/var/www/html/
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role == worker]
+
+  revproxy:
+    image: 192.168.100.254:5000/nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - /data/conf-nginx:/etc/nginx/conf.d
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.role == manager]

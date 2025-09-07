@@ -1,0 +1,30 @@
+ldap {
+    server = 'ldaps://ad1.projet.ad'
+    identity = 'cn=freeradius,cn=Users,dc=projet,dc=ad'
+    password = 'Mlkjgh2368'
+    base_dn = 'dc=projet,dc=ad'
+    filter = '(sAMAccountName=%{%{Stripped-User-Name}:-%{User-Name}})'
+#    filter = "(sAMAccountName=%{User-Name})"
+    port = 636
+    start_tls = yes
+    tls {
+        ca_file = /etc/freeradius/certs/ldaps.pem
+    }
+
+    user {
+      base_dn = "dc=projet,dc=ad"
+      filter = "(sAMAccountName=%{User-Name})"
+      access_attribute = "sAMAccountName"
+      access_filter = "(sAMAccountName=%{User-Name})"
+      access_positive = yes
+      start_tls = no
+    }
+
+    group {
+      base_dn = "DC=projet,DC=ad"
+      filter  = "(objectClass=group)"
+      name_attribute = cn
+      membership_attribute  = memberOf
+    }
+
+check_membership = yes
